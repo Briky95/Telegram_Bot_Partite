@@ -17,28 +17,6 @@ const MatchForm = () => {
     'Torneo Amatoriale'
   ];
 
-  // Mostra il pulsante principale quando il form è valido
-  useEffect(() => {
-    const isFormValid = homeTeam && awayTeam && 
-                        homeScore && awayScore && 
-                        date && championship;
-    
-    try {
-      if (isFormValid) {
-        WebApp.MainButton.show();
-        WebApp.MainButton.onClick(handleSubmit);
-      } else {
-        WebApp.MainButton.hide();
-      }
-      
-      return () => {
-        WebApp.MainButton.offClick(handleSubmit);
-      };
-    } catch (error) {
-      console.warn('Telegram WebApp button features not available in standalone mode');
-    }
-  }, [homeTeam, awayTeam, homeScore, awayScore, date, championship]);
-
   const handleSubmit = () => {
     // Qui invieremo i dati al backend
     const matchData = {
@@ -93,6 +71,28 @@ const MatchForm = () => {
     setDate('');
     setChampionship('');
   };
+
+  // Mostra il pulsante principale quando il form è valido
+  useEffect(() => {
+    const isFormValid = homeTeam && awayTeam && 
+                        homeScore && awayScore && 
+                        date && championship;
+    
+    try {
+      if (isFormValid) {
+        WebApp.MainButton.show();
+        WebApp.MainButton.onClick(handleSubmit);
+      } else {
+        WebApp.MainButton.hide();
+      }
+      
+      return () => {
+        WebApp.MainButton.offClick(handleSubmit);
+      };
+    } catch (error) {
+      console.warn('Telegram WebApp button features not available in standalone mode');
+    }
+  }, [homeTeam, awayTeam, homeScore, awayScore, date, championship, handleSubmit]);
 
   return (
     <div className="match-form">

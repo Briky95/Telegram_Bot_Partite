@@ -29,7 +29,7 @@ const Standings = () => {
       .catch(error => {
         console.error('Error fetching championships:', error);
       });
-  }, []);
+  }, [selectedChampionship]);
 
   // Carica le classifiche dal backend
   useEffect(() => {
