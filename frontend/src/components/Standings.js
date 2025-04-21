@@ -16,7 +16,7 @@ const Standings = () => {
 
   // Carica i campionati dal backend
   useEffect(() => {
-    fetch('http://localhost:3002/api/championships')
+    fetch('/api/championships')
       .then(response => response.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -36,7 +36,7 @@ const Standings = () => {
     if (!selectedChampionship) return;
     
     setLoading(true);
-    fetch(`http://localhost:3002/api/standings/${selectedChampionship}`)
+    fetch(`/api/standings/${selectedChampionship}`)
       .then(response => response.json())
       .then(data => {
         setStandings(data);

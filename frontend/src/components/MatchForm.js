@@ -53,7 +53,7 @@ const MatchForm = () => {
     console.log('Dati partita:', matchData);
     
     // Invia i dati al backend
-    fetch('http://localhost:3002/api/matches', {
+    fetch('/api/matches', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

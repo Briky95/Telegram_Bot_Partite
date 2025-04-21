@@ -9,7 +9,7 @@ const MatchList = () => {
   // Carica le partite dal backend
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:3002/api/matches')
+    fetch('/api/matches')
       .then(response => response.json())
       .then(data => {
         setMatches(data);
