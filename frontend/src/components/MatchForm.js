@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import WebApp from '@twa-dev/sdk';
-import { FiPlusCircle, FiCalendar, FiHome, FiUsers, FiTrophy } from 'react-icons/fi';
+import { FiPlusCircle, FiCalendar, FiHome, FiUsers, FiAward } from 'react-icons/fi';
 
 const MatchForm = () => {
   const [homeTeam, setHomeTeam] = useState('');
@@ -201,7 +201,7 @@ const MatchForm = () => {
       
       <div className="form-group">
         <label className="form-label">
-          <FiTrophy style={{ marginRight: '8px' }} />
+          <FiAward style={{ marginRight: '8px' }} />
           Campionato
         </label>
         <select 

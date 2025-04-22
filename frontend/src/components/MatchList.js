@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiList, FiFilter, FiCalendar, FiTrophy, FiAlertCircle, FiLoader } from 'react-icons/fi';
+import { FiList, FiFilter, FiCalendar, FiAward, FiAlertCircle, FiLoader } from 'react-icons/fi';
 
 const MatchList = () => {
   // Stato per le partite
@@ -191,7 +191,7 @@ const MatchList = () => {
               return (
                 <div key={match.id} className="card">
                   <div className="championship-badge">
-                    <FiTrophy style={{ marginRight: '4px', fontSize: '12px' }} />
+                    <FiAward style={{ marginRight: '4px', fontSize: '12px' }} />
                     {match.championship}
                   </div>
                   

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiAward, FiTrophy, FiAlertCircle, FiLoader, FiInfo } from 'react-icons/fi';
+import { FiAward, FiAlertCircle, FiLoader, FiInfo } from 'react-icons/fi';
 
 const Standings = () => {
   const [selectedChampionship, setSelectedChampionship] = useState('Serie C1');
@@ -100,7 +100,7 @@ const Standings = () => {
       
       <div className="form-group">
         <label className="form-label">
-          <FiTrophy style={{ marginRight: '8px' }} />
+          <FiAward style={{ marginRight: '8px' }} />
           Campionato
         </label>
         <select 
