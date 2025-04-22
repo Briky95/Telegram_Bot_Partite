@@ -2,8 +2,24 @@
   "version": 2,
   "buildCommand": "cd frontend && CI=false npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "cd frontend && npm install",
+  "installCommand": "cd frontend && npm install && cd ../backend && npm install",
   "env": {
     "CI": "false"
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/build/$1"
+    }
+  ],
+  "functions": {
+    "backend/server.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
   }
 }

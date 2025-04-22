@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const TelegramBot = require('node-telegram-bot-api');
+const fs = require('fs');
+const path = require('path');
 
 // Inizializzazione dell'app Express
 const app = express();
@@ -9,14 +11,54 @@ const PORT = process.env.PORT || 3002;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://t.me', process.env.WEBAPP_URL],
+  origin: ['http://localhost:3000', 'https://t.me', process.env.WEBAPP_URL, '*'],
   credentials: true
 }));
 app.use(express.json());
 
-// Database in memoria (in un'applicazione reale useresti un database vero)
-const matches = [];
-const teams = {};
+// Percorsi dei file di database
+const DATA_DIR = path.join(__dirname, 'data');
+const MATCHES_FILE = path.join(DATA_DIR, 'matches.json');
+const TEAMS_FILE = path.join(DATA_DIR, 'teams.json');
+
+// Assicurati che la directory data esista
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// Carica i dati dai file o inizializza con valori predefiniti
+let matches = [];
+let teams = {};
+
+try {
+  if (fs.existsSync(MATCHES_FILE)) {
+    matches = JSON.parse(fs.readFileSync(MATCHES_FILE, 'utf8'));
+    console.log(`Caricati ${matches.length} partite dal file`);
+  }
+} catch (error) {
+  console.error('Errore nel caricamento delle partite:', error);
+}
+
+try {
+  if (fs.existsSync(TEAMS_FILE)) {
+    teams = JSON.parse(fs.readFileSync(TEAMS_FILE, 'utf8'));
+    console.log(`Caricati dati di ${Object.keys(teams).length} squadre dal file`);
+  }
+} catch (error) {
+  console.error('Errore nel caricamento delle squadre:', error);
+}
+
+// Funzione per salvare i dati nei file
+function saveData() {
+  try {
+    fs.writeFileSync(MATCHES_FILE, JSON.stringify(matches, null, 2));
+    fs.writeFileSync(TEAMS_FILE, JSON.stringify(teams, null, 2));
+    console.log('Dati salvati con successo');
+  } catch (error) {
+    console.error('Errore nel salvataggio dei dati:', error);
+  }
+}
+
 const championships = [
   'Serie C1',
   'Serie C2',
@@ -72,13 +114,19 @@ app.get('/api/matches', (req, res) => {
 app.post('/api/matches', (req, res) => {
   const { homeTeam, awayTeam, homeScore, awayScore, date, championship } = req.body;
   
+  console.log('Ricevuta richiesta di aggiunta partita:', req.body);
+  
   // Validazione
   if (!homeTeam || !awayTeam || homeScore === undefined || awayScore === undefined || !date || !championship) {
+    console.error('Validazione fallita:', { homeTeam, awayTeam, homeScore, awayScore, date, championship });
     return res.status(400).json({ error: 'Tutti i campi sono obbligatori' });
   }
   
+  // Genera un ID univoco
+  const newId = matches.length > 0 ? Math.max(...matches.map(m => m.id)) + 1 : 1;
+  
   const newMatch = {
-    id: matches.length + 1,
+    id: newId,
     homeTeam,
     awayTeam,
     homeScore: parseInt(homeScore),
@@ -93,6 +141,10 @@ app.post('/api/matches', (req, res) => {
   // Aggiorna le statistiche delle squadre
   updateTeamStats(homeTeam, awayTeam, homeScore, awayScore, championship);
   
+  // Salva i dati nei file
+  saveData();
+  
+  console.log('Partita aggiunta con successo:', newMatch);
   res.status(201).json(newMatch);
 });
 

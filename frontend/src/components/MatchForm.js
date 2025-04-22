@@ -74,6 +74,7 @@ const MatchForm = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify(matchData),
     })
