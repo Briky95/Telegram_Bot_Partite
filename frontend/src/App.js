@@ -4,7 +4,7 @@ import './App.css';
 import MatchForm from './components/MatchForm';
 import MatchList from './components/MatchList';
 import Standings from './components/Standings';
-import { FiPlusCircle, FiList, FiAward, FiInfo } from 'react-icons/fi';
+import { FiPlusCircle, FiList, FiAward } from 'react-icons/fi';
 
 function App() {
   const [activeTab, setActiveTab] = useState('add');
